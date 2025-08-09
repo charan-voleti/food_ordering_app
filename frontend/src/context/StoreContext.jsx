@@ -1,4 +1,3 @@
-
 import { createContext, useEffect, useState } from "react";
 import axios from 'axios';
 
@@ -6,11 +5,14 @@ export const StoreContext = createContext(null);
 
 const StoreContextProvider = (props) => {
   const [cartItems, setCartItems] = useState({});
-  const url = "https://mybackend-myaq.onrender.com";
+  const url = "http://localhost:4000";
 
   const [token, setToken] = useState("");
   const [userId, setUserId] = useState(""); 
   const [food_list, setFoodList] = useState([]);
+
+
+  const [selectedDishId, setSelectedDishId] = useState(null);
 
   const addToCart = async (itemId) => {
     if (!cartItems[itemId]) {
@@ -84,7 +86,9 @@ const StoreContextProvider = (props) => {
     setToken,
     loadCartData,
     userId,        
-    setUserId       
+    setUserId,
+    selectedDishId,   
+    setSelectedDishId 
   };
 
   return (
