@@ -20,7 +20,7 @@ const Home = () => {
           element.style.boxShadow = "0 0 15px orange";
           element.style.borderRadius = "8px";
 
-          // remove highlight after 2 seconds
+  
           setTimeout(() => {
             element.style.boxShadow = "none";
           }, 2000);
