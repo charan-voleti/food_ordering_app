@@ -1,38 +1,43 @@
 import express from "express";
-import cors from "cors"
+import cors from "cors";
 import { connectDB } from "./config/db.js";
 import foodRouter from "./routes/foodRoute.js";
 import userRouter from "./routes/userRoute.js";
-import 'dotenv/config.js'
+import 'dotenv/config.js';
 import cartRouter from "./routes/cartRoute.js";
 import orderRouter from "./routes/orderRoute.js";
+import path from "path";
+import { fileURLToPath } from "url";
 
+// app config
+const app = express();
+const port = 4000;
 
-//app config
-const app=express()
-const port=4000
+// fix __dirname in ES modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
+// middleware
+app.use(express.json()); // parse JSON requests
+app.use(cors()); // allow frontend to access backend
 
-//middleware
-app.use(express.json()) //req from frontend and backend it wil pass
-app.use(cors()) //we can acess backend from the frontend
+// db connection
+connectDB();
 
-//db connection
-connectDB()
+// serve uploads folder correctly
+app.use("/images", express.static(path.join(__dirname, "uploads")));
 
+// api endpoints
+app.use("/api/food", foodRouter);
+app.use("/api/user", userRouter);
+app.use("/api/cart", cartRouter);
+app.use("/api/order", orderRouter);
 
-//api endpoints
-app.use("/api/food",foodRouter)
-app.use("/images",express.static('uploads'))
-app.use("/api/user",userRouter)
-app.use("/api/cart",cartRouter)
-app.use("/api/order",orderRouter)
+app.get("/", (req, res) => {
+  res.send("API WORKING");
+});
 
+app.listen(port, () => {
+  console.log(`Server started on http://localhost:${port}`);
+});
 
-app.get("/",(req,res)=>{
-   res.send("API WORKING")
-})
-
-app.listen(port,()=>{
-    console.log(`Server started on http://localhost:${port}`)
-})
