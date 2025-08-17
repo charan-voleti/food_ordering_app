@@ -1,7 +1,7 @@
 import orderModel from "../models/orderModel.js";
 import userModel from "../models/userModel.js";
 
-
+// placing user order for frontend (NO STRIPE)
 const placeOrder = async (req, res) => {
   try {
     const newOrder = new orderModel({
@@ -9,7 +9,7 @@ const placeOrder = async (req, res) => {
       items: req.body.items,
       amount: req.body.amount,
       address: req.body.address,
-      payment: true,
+      payment: true, // directly mark as paid (since Stripe removed)
     });
 
     await newOrder.save();
@@ -22,7 +22,7 @@ const placeOrder = async (req, res) => {
   }
 };
 
-
+// verify order (optional now, since no Stripe)
 const verifyOrder = async (req, res) => {
   const { orderId, success } = req.body;
   try {
@@ -39,7 +39,7 @@ const verifyOrder = async (req, res) => {
   }
 };
 
-
+// user orders for frontend
 const userOrders = async (req, res) => {
   try {
     const orders = await orderModel.find({ userId: req.userId });
@@ -50,7 +50,7 @@ const userOrders = async (req, res) => {
   }
 };
 
-
+// list all orders (admin)
 const listOrders = async (req, res) => {
   try {
     const orders = await orderModel.find({});
@@ -61,7 +61,7 @@ const listOrders = async (req, res) => {
   }
 };
 
-
+// update order status (admin)
 const updateStatus = async (req, res) => {
   try {
     await orderModel.findByIdAndUpdate(req.body.orderId, { status: req.body.status });
