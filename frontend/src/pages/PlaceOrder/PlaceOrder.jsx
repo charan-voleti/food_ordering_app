@@ -1,8 +1,8 @@
-
 import React, { useContext, useState } from 'react';
 import './PlaceOrder.css';
 import { StoreContext } from '../../context/StoreContext';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const PlaceOrder = () => {
   const {
@@ -13,6 +13,8 @@ const PlaceOrder = () => {
     url,
     userId 
   } = useContext(StoreContext);
+
+  const navigate = useNavigate();
 
   const [data, setData] = useState({
     firstName: "",
@@ -63,8 +65,8 @@ const PlaceOrder = () => {
       console.log("Order response:", response.data);
 
       if (response.data.success) {
-        const { session_url } = response.data;
-        window.location.replace(session_url);
+        alert("Payment Successful ");
+        navigate("/myorders"); 
       } else {
         alert("Order Failed: " + (response.data.message || "Unknown error occurred"));
       }
