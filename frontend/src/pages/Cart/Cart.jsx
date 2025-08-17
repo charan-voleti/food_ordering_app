@@ -1,5 +1,6 @@
 import React, { useContext } from "react";
-import { StoreContext } from "../context/StoreContext";
+import { StoreContext } from "../context/StoreContext.jsx";
+
 
 const Cart = () => {
   const { cartItems, food_list, removeFromCart, getTotalCartAmount, url } =
